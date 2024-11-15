@@ -2,9 +2,11 @@ package main
 
 import "fmt"
 import "os"
+import "net/http"
 
 
 func main() {
+
 	showIntroduction()
 
 	showMenu()
@@ -13,7 +15,7 @@ func main() {
 	
 	switch command {
 		case 1:
-			fmt.Println("Monitorando...")
+			startMonitoring()
 		case 2:
 			fmt.Println("Exibindo Logs...")
 		case 0:
@@ -45,4 +47,14 @@ func readCommand()int{
 	fmt.Scan(&readComannd)
 	fmt.Println("O comando escolhido foi", readComannd)
 	return readComannd
+}
+
+func startMonitoring(){
+	fmt.Println("Monitorando...")
+	site := "https://marianosilva.dev.br/"
+	response, _ := http.Get(site)
+
+	if response.StatusCode == 200 {
+		fmt.Println("Site:", site, "foi carregado com sucesso!")
+	}
 }
