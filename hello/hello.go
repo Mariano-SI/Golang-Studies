@@ -6,26 +6,25 @@ import "net/http"
 
 
 func main() {
-
 	showIntroduction()
-
-	showMenu()
-
-	command := readCommand()
-	
-	switch command {
-		case 1:
-			startMonitoring()
-		case 2:
-			fmt.Println("Exibindo Logs...")
-		case 0:
-			fmt.Println("Saindo do Programa...")
-			os.Exit(0)
-		default:
-			fmt.Println("Não conheço este comando")
-			os.Exit(-1)
+	for {
+		showMenu()
+		command := readCommand()
+		
+		switch command {
+			case 1:
+				startMonitoring()
+			case 2:
+				fmt.Println("Exibindo Logs...")
+			case 0:
+				fmt.Println("Saindo do Programa...")
+				os.Exit(0)
+			default:
+				fmt.Println("Não conheço este comando")
+				os.Exit(-1)
+		}
 	}
-	
+
 }
 
 func showIntroduction() {
@@ -52,9 +51,16 @@ func readCommand()int{
 func startMonitoring(){
 	fmt.Println("Monitorando...")
 	site := "https://marianosilva.dev.br/"
+	var sites [3]string 
+	sites[0] = "https://marianosilva.dev.br/"
+	sites[1] = "https://www.alura.com.br"
+	sites[2] = "https://www.caelum.com.br"
+	fmt.Println(sites)
 	response, _ := http.Get(site)
 
 	if response.StatusCode == 200 {
 		fmt.Println("Site:", site, "foi carregado com sucesso!")
+	}else{
+		fmt.Println("Site:", site, "esta com problemas. Status Code: ", response.StatusCode)
 	}
 }
