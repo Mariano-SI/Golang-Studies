@@ -3,10 +3,14 @@ package main
 import "fmt"
 import "os"
 import "net/http"
+import "time"
 
+const monitoringTimes = 3
+const monitoringDelay = 5
 
 func main() {
 	showIntroduction()
+
 	for {
 		showMenu()
 		command := readCommand()
@@ -50,17 +54,31 @@ func readCommand()int{
 
 func startMonitoring(){
 	fmt.Println("Monitorando...")
-	site := "https://marianosilva.dev.br/"
-	var sites [3]string 
-	sites[0] = "https://marianosilva.dev.br/"
-	sites[1] = "https://www.alura.com.br"
-	sites[2] = "https://www.caelum.com.br"
-	fmt.Println(sites)
-	response, _ := http.Get(site)
+	
+	sites := []string{"https://marianosilva.dev.br/", "https://www.alura.com.br", "https://www.caelum.com.br"}
 
+
+	fmt.Println(sites)
+
+	for i := 0; i < monitoringTimes; i++{
+		for i, site := range sites{
+			fmt.Println("Testando site: ", i, " ", site)
+			testSite(site)
+		}
+		time.Sleep(monitoringTimes * time.Second)
+	}
+
+
+	fmt.Println("")
+
+}
+
+func testSite(site string){
+	response, _ := http.Get(site)
 	if response.StatusCode == 200 {
 		fmt.Println("Site:", site, "foi carregado com sucesso!")
 	}else{
 		fmt.Println("Site:", site, "esta com problemas. Status Code: ", response.StatusCode)
-	}
+	}	
 }
+
